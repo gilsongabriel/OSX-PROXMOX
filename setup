@@ -6,21 +6,21 @@
 # https://luchina.com.br
 #
 # COPYRIGHT - 2021, 2022
-# 
-# All rights reserved - You may not copy, reproduce, distribute, publish, display, perform, modify, 
-# create derivative works, transmit, or in any way exploit any such content, nor may you distribute 
-# any part of this content over any network, including a local area network, sell or offer it for 
-# sale, or use such content to construct any kind of database. 
-# 
-# You may not alter or remove any copyright or other notice from copies of the content on any scripts 
-# in the solution of 'OSX-PROXMOX Solution - GABRIEL LUCHINA'. 
 #
-# Copying or storing any content except as provided above is expressly prohibited without prior 
-# written permission of copyright holder identified in the individual content’s copyright notice. 
-# 
-# For permission to use the content 'OSX-PROXMOX Solution - GABRIEL LUCHINA', 
+# All rights reserved - You may not copy, reproduce, distribute, publish, display, perform, modify,
+# create derivative works, transmit, or in any way exploit any such content, nor may you distribute
+# any part of this content over any network, including a local area network, sell or offer it for
+# sale, or use such content to construct any kind of database.
+#
+# You may not alter or remove any copyright or other notice from copies of the content on any scripts
+# in the solution of 'OSX-PROXMOX Solution - GABRIEL LUCHINA'.
+#
+# Copying or storing any content except as provided above is expressly prohibited without prior
+# written permission of copyright holder identified in the individual content’s copyright notice.
+#
+# For permission to use the content 'OSX-PROXMOX Solution - GABRIEL LUCHINA',
 # please contact legal@luchina.com.br
-# 
+#
 # FOR DEV/STUDENT ONLY PURPOSES - NOT COMERCIAL
 #
 # Credits:
@@ -64,11 +64,11 @@ if [ ! -e ${LOGDIR} ]; then mkdir ${LOGDIR}; fi;
 
 if [ ! -e /etc/pve/qemu-server/.osx-proxmox ]
 then
-	
+
 	mkdir -p ${LOGDIR}
 
 	LOGFILE=${LOGDIR}/prerequisites-setup.log
-	
+
 	echo " "
 	echo "OSX-PROXMOX (Version ${HACKPXVERSION}) - GABRIEL LUCHINA - https://osx-proxmox.com"
 	echo " "
@@ -90,7 +90,7 @@ then
 	apt-get update > ${LOGFILE} 2>> ${LOGFILE}
 
 	if [ $? -ne 0 ]
-	then 
+	then
 		echo "Error with 'apt-get update' ..."
 		echo "Trying to change /etc/apt/sources.list"
  		Country=$(curl -s https://ipinfo.io/country | tr '[:upper:]' '[:lower:]')
@@ -262,12 +262,12 @@ do
 		read CRTRECODISK
 
 		if [ -z $CRTRECODISK ]; then CRTRECODISK="Y"; fi;
-		
+
 		if [ "${CRTRECODISK}" == "Y" ] || [ "${CRTRECODISK}" == "y" ]
 		then
 			echo  " "
 			echo "Downloading and creating the recovery image for installation ..."
-			
+
 			LOGFILE=${LOGDIR}/crt-recovery-highsierra.log
 
 			if [ ! -e ${ISODIR}/recovery-highsierra.iso ]
@@ -302,7 +302,7 @@ do
 
 		echo " "
 		echo "Creating virtual machine with macOS - High Sierra ..."
-		
+
 		if [ ${OSX_PLATFORM} == 'AMD' ]
 		then
 
@@ -348,7 +348,7 @@ do
 
 		if [ ${OSX_PLATFORM} == 'INTEL' ]
 		then
-			
+
 			LOGFILE=${LOGDIR}/crt-vm-intel-highsierra.log
 
 			qm create ${VM_ID} \
@@ -402,7 +402,7 @@ do
 ################################################################################################################################################################################################
 
 	## macOS Mojave - 10.14
-	
+
 	if [ ${OPT} -eq 2 ]
 	then
 		clear
@@ -458,7 +458,7 @@ do
 		read CRTRECODISK
 
 		if [ -z $CRTRECODISK ]; then CRTRECODISK="Y"; fi;
-		
+
 		if [ "${CRTRECODISK}" == "Y" ] || [ "${CRTRECODISK}" == "y" ]
 		then
 			echo  " "
@@ -544,7 +544,7 @@ do
 
 		if [ ${OSX_PLATFORM} == 'INTEL' ]
 		then
-			
+
 			LOGFILE=${LOGDIR}/crt-vm-intel-mojave.log
 
 			qm create ${VM_ID} \
@@ -576,7 +576,7 @@ do
 
 			## Fix media cdrom to disk, because PVE 8.4
 			sed -i 's/media=cdrom/media=disk/' /etc/pve/qemu-server/$VM_ID.conf
-			
+
 			## Fix for QEMU 6.1 for PCI Passthrough
 			if [ `qemu-system-x86_64 --version | grep -e "6.1" -e "6.2" -e "7.1" -e "7.2" -e "8.0" -e "8.1" -e "9.0.2" -e "9.2.0" | wc -l` -eq 1 ]
 			then
@@ -654,10 +654,10 @@ do
 		read CRTRECODISK
 
 		if [ -z $CRTRECODISK ]; then CRTRECODISK="Y"; fi;
-		
+
 		if [ "${CRTRECODISK}" == "Y" ] || [ "${CRTRECODISK}" == "y" ]
 		then
-			echo  " "		
+			echo  " "
 			echo "Downloading and creating the recovery image for installation ..."
 
 			LOGFILE=${LOGDIR}/crt-recovery-catalina.log
@@ -729,7 +729,7 @@ do
 
 			## Fix media cdrom to disk, because PVE 8.4
 			sed -i 's/media=cdrom/media=disk/' /etc/pve/qemu-server/$VM_ID.conf
-			
+
 			## Fix for QEMU 6.1 for PCI Passthrough
 			if [ `qemu-system-x86_64 --version | grep -e "6.1" -e "6.2" -e "7.1" -e "7.2" -e "8.0" -e "8.1" -e "9.0.2" -e "9.2.0" | wc -l` -eq 1 ]
 			then
@@ -740,7 +740,7 @@ do
 
 		if [ ${OSX_PLATFORM} == 'INTEL' ]
 		then
-			
+
 			LOGFILE=${LOGDIR}/crt-vm-intel-catalina.log
 
 			qm create ${VM_ID} \
@@ -772,7 +772,7 @@ do
 
 			## Fix media cdrom to disk, because PVE 8.4
 			sed -i 's/media=cdrom/media=disk/' /etc/pve/qemu-server/$VM_ID.conf
-			
+
 			## Fix for QEMU 6.1 for PCI Passthrough
 			if [ `qemu-system-x86_64 --version | grep -e "6.1" -e "6.2" -e "7.1" -e "7.2" -e "8.0" -e "8.1" -e "9.0.2" -e "9.2.0" | wc -l` -eq 1 ]
 			then
@@ -850,12 +850,12 @@ do
 		read CRTRECODISK
 
 		if [ -z $CRTRECODISK ]; then CRTRECODISK="Y"; fi;
-		
+
 		if [ "${CRTRECODISK}" == "Y" ] || [ "${CRTRECODISK}" == "y" ]
 		then
-			echo  " "		
+			echo  " "
 			echo "Downloading and creating the recovery image for installation ..."
-			
+
 			LOGFILE=${LOGDIR}/crt-recovery-bigsur.log
 
 			if [ ! -e ${ISODIR}/recovery-bigsur.iso ]
@@ -925,7 +925,7 @@ do
 
 			## Fix media cdrom to disk, because PVE 8.4
 			sed -i 's/media=cdrom/media=disk/' /etc/pve/qemu-server/$VM_ID.conf
-			
+
 			## Fix for QEMU 6.1 for PCI Passthrough
 			if [ `qemu-system-x86_64 --version | grep -e "6.1" -e "6.2" -e "7.1" -e "7.2" -e "8.0" -e "8.1" -e "9.0.2" -e "9.2.0" | wc -l` -eq 1 ]
 			then
@@ -936,7 +936,7 @@ do
 
 		if [ ${OSX_PLATFORM} == 'INTEL' ]
 		then
-			
+
 			LOGFILE=${LOGDIR}/crt-vm-intel-bigsur.log
 
 			qm create ${VM_ID} \
@@ -968,7 +968,7 @@ do
 
 			## Fix media cdrom to disk, because PVE 8.4
 			sed -i 's/media=cdrom/media=disk/' /etc/pve/qemu-server/$VM_ID.conf
-			
+
 			## Fix for QEMU 6.1 for PCI Passthrough
 			if [ `qemu-system-x86_64 --version | grep -e "6.1" -e "6.2" -e "7.1" -e "7.2" -e "8.0" -e "8.1" -e "9.0.2" -e "9.2.0" | wc -l` -eq 1 ]
 			then
@@ -1046,12 +1046,12 @@ do
 		read CRTRECODISK
 
 		if [ -z $CRTRECODISK ]; then CRTRECODISK="Y"; fi;
-		
+
 		if [ "${CRTRECODISK}" == "Y" ] || [ "${CRTRECODISK}" == "y" ]
 		then
-			echo  " "		
+			echo  " "
 			echo "Downloading and creating the recovery image for installation ..."
-			
+
 			LOGFILE=${LOGDIR}/crt-recovery-monterey.log
 
 			if [ ! -e ${ISODIR}/recovery-monterey.iso ]
@@ -1121,7 +1121,7 @@ do
 
 			## Fix media cdrom to disk, because PVE 8.4
 			sed -i 's/media=cdrom/media=disk/' /etc/pve/qemu-server/$VM_ID.conf
-			
+
 			## Fix for QEMU 6.1 for PCI Passthrough
 			if [ `qemu-system-x86_64 --version | grep -e "6.1" -e "6.2" -e "7.1" -e "7.2" -e "8.0" -e "8.1" -e "9.0.2" -e "9.2.0" | wc -l` -eq 1 ]
 			then
@@ -1132,7 +1132,7 @@ do
 
 		if [ ${OSX_PLATFORM} == 'INTEL' ]
 		then
-			
+
 			LOGFILE=${LOGDIR}/crt-vm-intel-monterey.log
 
 			qm create ${VM_ID} \
@@ -1164,7 +1164,7 @@ do
 
 			## Fix media cdrom to disk, because PVE 8.4
 			sed -i 's/media=cdrom/media=disk/' /etc/pve/qemu-server/$VM_ID.conf
-			
+
 			## Fix for QEMU 6.1 for PCI Passthrough
 			if [ `qemu-system-x86_64 --version | grep -e "6.1" -e "6.2" -e "7.1" -e "7.2" -e "8.0" -e "8.1" -e "9.0.2" -e "9.2.0" | wc -l` -eq 1 ]
 			then
@@ -1242,12 +1242,12 @@ do
 		read CRTRECODISK
 
 		if [ -z $CRTRECODISK ]; then CRTRECODISK="Y"; fi;
-		
+
 		if [ "${CRTRECODISK}" == "Y" ] || [ "${CRTRECODISK}" == "y" ]
 		then
-			echo  " "		
+			echo  " "
 			echo "Downloading and creating the recovery image for installation ..."
-			
+
 			LOGFILE=${LOGDIR}/crt-recovery-ventura.log
 
 			if [ ! -e ${ISODIR}/recovery-ventura.iso ]
@@ -1317,7 +1317,7 @@ do
 
 			## Fix media cdrom to disk, because PVE 8.4
 			sed -i 's/media=cdrom/media=disk/' /etc/pve/qemu-server/$VM_ID.conf
-			
+
 			## Fix for QEMU 6.1 for PCI Passthrough
 			if [ `qemu-system-x86_64 --version | grep -e "6.1" -e "6.2" -e "7.1" -e "7.2" -e "8.0" -e "8.1" -e "9.0.2" -e "9.2.0" | wc -l` -eq 1 ]
 			then
@@ -1328,7 +1328,7 @@ do
 
 		if [ ${OSX_PLATFORM} == 'INTEL' ]
 		then
-			
+
 			LOGFILE=${LOGDIR}/crt-vm-intel-ventura.log
 
 			qm create ${VM_ID} \
@@ -1360,7 +1360,7 @@ do
 
 			## Fix media cdrom to disk, because PVE 8.4
 			sed -i 's/media=cdrom/media=disk/' /etc/pve/qemu-server/$VM_ID.conf
-			
+
 			## Fix for QEMU 6.1 for PCI Passthrough
 			if [ `qemu-system-x86_64 --version | grep -e "6.1" -e "6.2" -e "7.1" -e "7.2" -e "8.0" -e "8.1" -e "9.0.2" -e "9.2.0" | wc -l` -eq 1 ]
 			then
@@ -1438,12 +1438,12 @@ do
 		read CRTRECODISK
 
 		if [ -z $CRTRECODISK ]; then CRTRECODISK="Y"; fi;
-		
+
 		if [ "${CRTRECODISK}" == "Y" ] || [ "${CRTRECODISK}" == "y" ]
 		then
-			echo  " "		
+			echo  " "
 			echo "Downloading and creating the recovery image for installation ..."
-			
+
 			LOGFILE=${LOGDIR}/crt-recovery-sonoma.log
 
 			if [ ! -e ${ISODIR}/recovery-sonoma.iso ]
@@ -1513,7 +1513,7 @@ do
 
 			## Fix media cdrom to disk, because PVE 8.4
 			sed -i 's/media=cdrom/media=disk/' /etc/pve/qemu-server/$VM_ID.conf
-			
+
 			## Fix for QEMU 6.1 for PCI Passthrough
 			if [ `qemu-system-x86_64 --version | grep -e "6.1" -e "6.2" -e "7.1" -e "7.2" -e "8.0" -e "8.1" -e "9.0.2" -e "9.2.0" | wc -l` -eq 1 ]
 			then
@@ -1524,7 +1524,7 @@ do
 
 		if [ ${OSX_PLATFORM} == 'INTEL' ]
 		then
-			
+
 			LOGFILE=${LOGDIR}/crt-vm-intel-sonoma.log
 
 			qm create ${VM_ID} \
@@ -1556,7 +1556,7 @@ do
 
 			## Fix media cdrom to disk, because PVE 8.4
 			sed -i 's/media=cdrom/media=disk/' /etc/pve/qemu-server/$VM_ID.conf
-			
+
 			## Fix for QEMU 6.1 for PCI Passthrough
 			if [ `qemu-system-x86_64 --version | grep -e "6.1" -e "6.2" -e "7.1" -e "7.2" -e "8.0" -e "8.1" -e "9.0.2" -e "9.2.0" | wc -l` -eq 1 ]
 			then
@@ -1634,12 +1634,12 @@ do
 		read CRTRECODISK
 
 		if [ -z $CRTRECODISK ]; then CRTRECODISK="Y"; fi;
-		
+
 		if [ "${CRTRECODISK}" == "Y" ] || [ "${CRTRECODISK}" == "y" ]
 		then
-			echo  " "		
+			echo  " "
 			echo "Downloading and creating the recovery image for installation ..."
-			
+
 			LOGFILE=${LOGDIR}/crt-recovery-sequoia.log
 
 			if [ ! -e ${ISODIR}/recovery-sequoia.iso ]
@@ -1709,7 +1709,7 @@ do
 
 			## Fix media cdrom to disk, because PVE 8.4
 			sed -i 's/media=cdrom/media=disk/' /etc/pve/qemu-server/$VM_ID.conf
-			
+
 			## Fix for QEMU 6.1 for PCI Passthrough
 			if [ `qemu-system-x86_64 --version | grep -e "6.1" -e "6.2" -e "7.1" -e "7.2" -e "8.0" -e "8.1" -e "9.0.2" -e "9.2.0" | wc -l` -eq 1 ]
 			then
@@ -1720,7 +1720,7 @@ do
 
 		if [ ${OSX_PLATFORM} == 'INTEL' ]
 		then
-			
+
 			LOGFILE=${LOGDIR}/crt-vm-intel-sequoia.log
 
 			qm create ${VM_ID} \
@@ -1752,7 +1752,7 @@ do
 
 			## Fix media cdrom to disk, because PVE 8.4
 			sed -i 's/media=cdrom/media=disk/' /etc/pve/qemu-server/$VM_ID.conf
-			
+
 			## Fix for QEMU 6.1 for PCI Passthrough
 			if [ `qemu-system-x86_64 --version | grep -e "6.1" -e "6.2" -e "7.1" -e "7.2" -e "8.0" -e "8.1" -e "9.0.2" -e "9.2.0" | wc -l` -eq 1 ]
 			then
@@ -1793,7 +1793,7 @@ do
 			echo "deb http://download.proxmox.com/debian/pve bullseye pve-no-subscription" > /etc/apt/sources.list.d/pxve-no-sub.list
 			apt update -y >> ${LOGFILE} 2>> ${LOGFILE}
 			if [ $? -ne 0 ]; then echo "apt update error - check log file ${LOGFILE}"; exit; fi;
-			echo "Promox VE NO Subscription repository has been successfully added."	
+			echo "Promox VE NO Subscription repository has been successfully added."
 			exit
 		fi
 
@@ -1802,7 +1802,7 @@ do
 			echo "deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription" > /etc/apt/sources.list.d/pxve-no-sub.list
 			apt update -y >> ${LOGFILE} 2>> ${LOGFILE}
 			if [ $? -ne 0 ]; then echo "apt update error - check log file ${LOGFILE}"; exit; fi;
-			echo "Promox VE NO Subscription repository has been successfully added."	
+			echo "Promox VE NO Subscription repository has been successfully added."
 			exit
 		fi
 
@@ -1923,7 +1923,7 @@ do
 		        bridge_ports none
 		        bridge_stp off
 		        bridge_fd 0
-		\n        
+		\n
 		post-up echo 1 > /proc/sys/net/ipv4/ip_forward
 		post-up   iptables -t nat -A POSTROUTING -s '192.168.1.0/24' -o vmbr0 -j MASQUERADE
 		post-down iptables -t nat -D POSTROUTING -s '192.168.1.0/24' -o vmbr0 -j MASQUERADE" >> /etc/network/interfaces
@@ -2048,6 +2048,56 @@ do
 			patch -p1 < /root/OSX-PROXMOX/tmp/timeout.patch >> ${LOGFILE} 2>> ${LOGFILE}
 			cd ${SCRIPT_DIR}
 			rm -f ${TMPDIR}/timeout.patch
+		fi
+
+		# Add toggle for SetupVirtualMap value
+		CONFIG_FILE_DIR="/mnt/opencore/EFI/OC"
+		CONFIG_FILE="${CONFIG_FILE_DIR}/config.plist"
+		BACKUP_FILE="${CONFIG_FILE}.backup"
+
+		echo " "
+		echo -n "Toggle SetupVirtualMap value? [Y/N] [or ENTER for Default: N]: "
+		read TOGGLE_VIRTUAL_MAP
+		if [ -z ${TOGGLE_VIRTUAL_MAP} ]; then TOGGLE_VIRTUAL_MAP="N"; fi;
+
+		if [ "${TOGGLE_VIRTUAL_MAP}" == "Y" ] || [ "${TOGGLE_VIRTUAL_MAP}" == "y" ]
+		then
+			# Check if config file exists
+			if [ ! -f "$CONFIG_FILE" ]; then
+				echo "Error: Config file not found at $CONFIG_FILE"
+				exit 1
+			fi
+
+			# Create backup
+			cp "$CONFIG_FILE" "$BACKUP_FILE"
+			echo "Created backup at $BACKUP_FILE"
+
+			# Find the line number where SetupVirtualMap is defined
+			LINE_NUM=$(grep -n "<key>SetupVirtualMap</key>" "$CONFIG_FILE" | cut -d ":" -f1)
+
+			if [ -z "$LINE_NUM" ]; then
+				echo "Error: Could not find SetupVirtualMap in config file"
+				exit 1
+			fi
+
+			# Get the value line (next line after the key)
+			VALUE_LINE_NUM=$((LINE_NUM + 1))
+			VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
+
+			# Toggle the value
+			if [[ "$VALUE_LINE" == *"<true/>"* ]]; then
+				# Change from true to false
+				sed -i '' "${VALUE_LINE_NUM}s/<true\/>/<false\/>/" "$CONFIG_FILE"
+				echo "SetupVirtualMap changed from <true/> to <false/>"
+			elif [[ "$VALUE_LINE" == *"<false/>"* ]]; then
+				# Change from false to true
+				sed -i '' "${VALUE_LINE_NUM}s/<false\/>/<true\/>/" "$CONFIG_FILE"
+				echo "SetupVirtualMap changed from <false/> to <true/>"
+			else
+				echo "Error: Could not determine current value of SetupVirtualMap"
+				echo "Current value line: $VALUE_LINE"
+				exit 1
+			fi
 		fi
 
 		diff -u --color /mnt/opencore/EFI/OC/config.plist.backup /mnt/opencore/EFI/OC/config.plist
