@@ -2052,11 +2052,8 @@ do
 
 		# Add toggle for SetupVirtualMap value
 		CONFIG_FILE_DIR="/mnt/opencore/EFI/OC"
-		echo "Config file directory: ${CONFIG_FILE_DIR}"
 		CONFIG_FILE="${CONFIG_FILE_DIR}/config.plist"
-		echo "Config file: ${CONFIG_FILE}"
 		BACKUP_FILE="${CONFIG_FILE}.backup"
-		echo "Backup file: ${BACKUP_FILE}"
 
 		echo " "
 		echo -n "Toggle SetupVirtualMap value? [Y/N] [or ENTER for Default: N]: "
@@ -2085,15 +2082,12 @@ do
 
 			# Get the value line (next line after the key)
 			VALUE_LINE_NUM=$((LINE_NUM + 1))
-			echo "Value line number: $VALUE_LINE_NUM"
 			VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
-			echo "Value line: $VALUE_LINE"
 
 			# Toggle the value
 			if [[ "$VALUE_LINE" == *"<true/>"* ]]; then
 				# Change from true to false
 				sed -i "${VALUE_LINE_NUM}s/<true\/>/<false\/>/" "$CONFIG_FILE"
-
 				echo "SetupVirtualMap changed from <true/> to <false/>"
 			elif [[ "$VALUE_LINE" == *"<false/>"* ]]; then
 				# Change from false to true
@@ -2101,6 +2095,182 @@ do
 				echo "SetupVirtualMap changed from <false/> to <true/>"
 			else
 				echo "Error: Could not determine current value of SetupVirtualMap"
+				echo "Current value line: $VALUE_LINE"
+				exit 1
+			fi
+		fi
+
+		echo " "
+		echo -n "Toggle AppleCpuPmCfgLock value? [Y/N] [or ENTER for Default: N]: "
+		read TOGGLE_CPUPM_CFGLOCK
+		if [ -z ${TOGGLE_CPUPM_CFGLOCK} ]; then TOGGLE_CPUPM_CFGLOCK="N"; fi;
+
+		if [ "${TOGGLE_CPUPM_CFGLOCK}" == "Y" ] || [ "${TOGGLE_CPUPM_CFGLOCK}" == "y" ]
+		then
+			# Check if config file exists
+			if [ ! -f "$CONFIG_FILE" ]; then
+				echo "Error: Config file not found at $CONFIG_FILE"
+				exit 1
+			fi
+
+			# Create backup
+			cp "$CONFIG_FILE" "$BACKUP_FILE"
+			echo "Created backup at $BACKUP_FILE"
+
+			# Find the line number where AppleCpuPmCfgLock is defined
+			LINE_NUM=$(grep -n "<key>AppleCpuPmCfgLock</key>" "$CONFIG_FILE" | cut -d ":" -f1)
+			if [ -z "$LINE_NUM" ]; then
+				echo "Error: Could not find AppleCpuPmCfgLock in config file"
+				exit 1
+			fi
+
+			# Get the value line (next line after the key)
+			VALUE_LINE_NUM=$((LINE_NUM + 1))
+			VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
+
+			# Toggle the value
+			if [[ "$VALUE_LINE" == *"<true/>"* ]]; then
+				# Change from true to false
+				sed -i "${VALUE_LINE_NUM}s/<true\/>/<false\/>/" "$CONFIG_FILE"
+				echo "AppleCpuPmCfgLock changed from <true/> to <false/>"
+			elif [[ "$VALUE_LINE" == *"<false/>"* ]]; then
+				# Change from false to true
+				sed -i "${VALUE_LINE_NUM}s/<false\/>/<true\/>/" "$CONFIG_FILE"
+				echo "AppleCpuPmCfgLock changed from <false/> to <true/>"
+			else
+				echo "Error: Could not determine current value of AppleCpuPmCfgLock"
+				echo "Current value line: $VALUE_LINE"
+				exit 1
+			fi
+		fi
+
+		echo " "
+		echo -n "Toggle AppleXcpmCfgLock value? [Y/N] [or ENTER for Default: N]: "
+		read TOGGLE_XCPM_CFGLOCK
+		if [ -z ${TOGGLE_XCPM_CFGLOCK} ]; then TOGGLE_XCPM_CFGLOCK="N"; fi;
+
+		if [ "${TOGGLE_XCPM_CFGLOCK}" == "Y" ] || [ "${TOGGLE_XCPM_CFGLOCK}" == "y" ]
+		then
+			# Check if config file exists
+			if [ ! -f "$CONFIG_FILE" ]; then
+				echo "Error: Config file not found at $CONFIG_FILE"
+				exit 1
+			fi
+
+			# Create backup
+			cp "$CONFIG_FILE" "$BACKUP_FILE"
+			echo "Created backup at $BACKUP_FILE"
+
+			# Find the line number where AppleXcpmCfgLock is defined
+			LINE_NUM=$(grep -n "<key>AppleXcpmCfgLock</key>" "$CONFIG_FILE" | cut -d ":" -f1)
+			if [ -z "$LINE_NUM" ]; then
+				echo "Error: Could not find AppleXcpmCfgLock in config file"
+				exit 1
+			fi
+
+			# Get the value line (next line after the key)
+			VALUE_LINE_NUM=$((LINE_NUM + 1))
+			VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
+
+			# Toggle the value
+			if [[ "$VALUE_LINE" == *"<true/>"* ]]; then
+				# Change from true to false
+				sed -i "${VALUE_LINE_NUM}s/<true\/>/<false\/>/" "$CONFIG_FILE"
+				echo "AppleXcpmCfgLock changed from <true/> to <false/>"
+			elif [[ "$VALUE_LINE" == *"<false/>"* ]]; then
+				# Change from false to true
+				sed -i "${VALUE_LINE_NUM}s/<false\/>/<true\/>/" "$CONFIG_FILE"
+				echo "AppleXcpmCfgLock changed from <false/> to <true/>"
+			else
+				echo "Error: Could not determine current value of AppleXcpmCfgLock"
+				echo "Current value line: $VALUE_LINE"
+				exit 1
+			fi
+		fi
+
+		echo " "
+		echo -n "Toggle AppleXcpmExtraMsrs value? [Y/N] [or ENTER for Default: N]: "
+		read TOGGLE_XCPM_MSRS
+		if [ -z ${TOGGLE_XCPM_MSRS} ]; then TOGGLE_XCPM_MSRS="N"; fi;
+
+		if [ "${TOGGLE_XCPM_MSRS}" == "Y" ] || [ "${TOGGLE_XCPM_MSRS}" == "y" ]
+		then
+			# Check if config file exists
+			if [ ! -f "$CONFIG_FILE" ]; then
+				echo "Error: Config file not found at $CONFIG_FILE"
+				exit 1
+			fi
+
+			# Create backup
+			cp "$CONFIG_FILE" "$BACKUP_FILE"
+			echo "Created backup at $BACKUP_FILE"
+
+			# Find the line number where AppleXcpmExtraMsrs is defined
+			LINE_NUM=$(grep -n "<key>AppleXcpmExtraMsrs</key>" "$CONFIG_FILE" | cut -d ":" -f1)
+			if [ -z "$LINE_NUM" ]; then
+				echo "Error: Could not find AppleXcpmExtraMsrs in config file"
+				exit 1
+			fi
+
+			# Get the value line (next line after the key)
+			VALUE_LINE_NUM=$((LINE_NUM + 1))
+			VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
+
+			# Toggle the value
+			if [[ "$VALUE_LINE" == *"<true/>"* ]]; then
+				# Change from true to false
+				sed -i "${VALUE_LINE_NUM}s/<true\/>/<false\/>/" "$CONFIG_FILE"
+				echo "AppleXcpmExtraMsrs changed from <true/> to <false/>"
+			elif [[ "$VALUE_LINE" == *"<false/>"* ]]; then
+				# Change from false to true
+				sed -i "${VALUE_LINE_NUM}s/<false\/>/<true\/>/" "$CONFIG_FILE"
+				echo "AppleXcpmExtraMsrs changed from <false/> to <true/>"
+			else
+				echo "Error: Could not determine current value of AppleXcpmExtraMsrs"
+				echo "Current value line: $VALUE_LINE"
+				exit 1
+			fi
+		fi
+
+		echo " "
+		echo -n "Toggle AppleXcpmForceBoost value? [Y/N] [or ENTER for Default: N]: "
+		read TOGGLE_XCPM_BOOST
+		if [ -z ${TOGGLE_XCPM_BOOST} ]; then TOGGLE_XCPM_BOOST="N"; fi;
+
+		if [ "${TOGGLE_XCPM_BOOST}" == "Y" ] || [ "${TOGGLE_XCPM_BOOST}" == "y" ]
+		then
+			# Check if config file exists
+			if [ ! -f "$CONFIG_FILE" ]; then
+				echo "Error: Config file not found at $CONFIG_FILE"
+				exit 1
+			fi
+
+			# Create backup
+			cp "$CONFIG_FILE" "$BACKUP_FILE"
+			echo "Created backup at $BACKUP_FILE"
+
+			# Find the line number where AppleXcpmForceBoost is defined
+			LINE_NUM=$(grep -n "<key>AppleXcpmForceBoost</key>" "$CONFIG_FILE" | cut -d ":" -f1)
+			if [ -z "$LINE_NUM" ]; then
+				echo "Error: Could not find AppleXcpmForceBoost in config file"
+				exit 1
+			fi
+
+			# Get the value line (next line after the key)
+			VALUE_LINE_NUM=$((LINE_NUM + 1))
+			VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
+
+			# Toggle the value
+			if [[ "$VALUE_LINE" == *"<true/>"* ]]; then
+				# Change from true to false
+				sed -i "${VALUE_LINE_NUM}s/<true\/>/<false\/>/" "$CONFIG_FILE"
+				echo "AppleXcpmForceBoost changed from <true/> to <false/>"
+			elif [[ "$VALUE_LINE" == *"<false/>"* ]]; then
+				# Change from false to true
+				sed -i "${VALUE_LINE_NUM}s/<false\/>/<true\/>/" "$CONFIG_FILE"
+				echo "AppleXcpmForceBoost changed from <false/> to <true/>"
+			else
+				echo "Error: Could not determine current value of AppleXcpmForceBoost"
 				echo "Current value line: $VALUE_LINE"
 				exit 1
 			fi
