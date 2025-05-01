@@ -2092,12 +2092,12 @@ do
 			# Toggle the value
 			if [[ "$VALUE_LINE" == *"<true/>"* ]]; then
 				# Change from true to false
-				sed -i '' "${VALUE_LINE_NUM}s/<true\/>/<false\/>/" "$CONFIG_FILE"
+				sed -i "${VALUE_LINE_NUM}s/<true\/>/<false\/>/" "$CONFIG_FILE"
 
 				echo "SetupVirtualMap changed from <true/> to <false/>"
 			elif [[ "$VALUE_LINE" == *"<false/>"* ]]; then
 				# Change from false to true
-				sed -i '' "${VALUE_LINE_NUM}s/<false\/>/<true\/>/" "$CONFIG_FILE"
+				sed -i "${VALUE_LINE_NUM}s/<false\/>/<true\/>/" "$CONFIG_FILE"
 				echo "SetupVirtualMap changed from <false/> to <true/>"
 			else
 				echo "Error: Could not determine current value of SetupVirtualMap"
