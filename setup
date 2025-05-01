@@ -2050,13 +2050,24 @@ do
 			rm -f ${TMPDIR}/timeout.patch
 		fi
 
-		# Add toggle for SetupVirtualMap value
 		CONFIG_FILE_DIR="/mnt/opencore/EFI/OC"
 		CONFIG_FILE="${CONFIG_FILE_DIR}/config.plist"
 		BACKUP_FILE="${CONFIG_FILE}.backup"
 
-		echo " "
-		echo -n "Toggle SetupVirtualMap value? [Y/N] [or ENTER for Default: N]: "
+		echo " " # SetupVirtualMap
+		# Find the line number where SetupVirtualMap is defined
+		LINE_NUM=$(grep -n "<key>SetupVirtualMap</key>" "$CONFIG_FILE" | cut -d ":" -f1)
+		echo "Line number: $LINE_NUM"
+		if [ -z "$LINE_NUM" ]; then
+			echo "Error: Could not find SetupVirtualMap in config file"
+			exit 1
+		fi
+
+		# Get the value line (next line after the key)
+		VALUE_LINE_NUM=$((LINE_NUM + 1))
+		VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
+
+		echo -n "Toggle SetupVirtualMap value? [Y/N] (Current value: $VALUE_LINE) [or ENTER for Default: N]: "
 		read TOGGLE_VIRTUAL_MAP
 		if [ -z ${TOGGLE_VIRTUAL_MAP} ]; then TOGGLE_VIRTUAL_MAP="N"; fi;
 
@@ -2071,18 +2082,6 @@ do
 			# Create backup
 			cp "$CONFIG_FILE" "$BACKUP_FILE"
 			echo "Created backup at $BACKUP_FILE"
-
-			# Find the line number where SetupVirtualMap is defined
-			LINE_NUM=$(grep -n "<key>SetupVirtualMap</key>" "$CONFIG_FILE" | cut -d ":" -f1)
-			echo "Line number: $LINE_NUM"
-			if [ -z "$LINE_NUM" ]; then
-				echo "Error: Could not find SetupVirtualMap in config file"
-				exit 1
-			fi
-
-			# Get the value line (next line after the key)
-			VALUE_LINE_NUM=$((LINE_NUM + 1))
-			VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
 
 			# Toggle the value
 			if [[ "$VALUE_LINE" == *"<true/>"* ]]; then
@@ -2099,6 +2098,8 @@ do
 				exit 1
 			fi
 		fi
+
+		diff -u --color /mnt/opencore/EFI/OC/config.plist.backup /mnt/opencore/EFI/OC/config.plist
 
 		echo " "
 		echo -n "Toggle AppleCpuPmCfgLock value? [Y/N] [or ENTER for Default: N]: "
@@ -2144,6 +2145,8 @@ do
 			fi
 		fi
 
+		diff -u --color /mnt/opencore/EFI/OC/config.plist.backup /mnt/opencore/EFI/OC/config.plist
+
 		echo " "
 		echo -n "Toggle AppleXcpmCfgLock value? [Y/N] [or ENTER for Default: N]: "
 		read TOGGLE_XCPM_CFGLOCK
@@ -2188,6 +2191,8 @@ do
 			fi
 		fi
 
+		diff -u --color /mnt/opencore/EFI/OC/config.plist.backup /mnt/opencore/EFI/OC/config.plist
+
 		echo " "
 		echo -n "Toggle AppleXcpmExtraMsrs value? [Y/N] [or ENTER for Default: N]: "
 		read TOGGLE_XCPM_MSRS
@@ -2231,6 +2236,8 @@ do
 				exit 1
 			fi
 		fi
+
+		diff -u --color /mnt/opencore/EFI/OC/config.plist.backup /mnt/opencore/EFI/OC/config.plist
 
 		echo " "
 		echo -n "Toggle AppleXcpmForceBoost value? [Y/N] [or ENTER for Default: N]: "
