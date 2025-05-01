@@ -2052,8 +2052,11 @@ do
 
 		# Add toggle for SetupVirtualMap value
 		CONFIG_FILE_DIR="/mnt/opencore/EFI/OC"
+		echo "Config file directory: ${CONFIG_FILE_DIR}"
 		CONFIG_FILE="${CONFIG_FILE_DIR}/config.plist"
+		echo "Config file: ${CONFIG_FILE}"
 		BACKUP_FILE="${CONFIG_FILE}.backup"
+		echo "Backup file: ${BACKUP_FILE}"
 
 		echo " "
 		echo -n "Toggle SetupVirtualMap value? [Y/N] [or ENTER for Default: N]: "
@@ -2074,7 +2077,7 @@ do
 
 			# Find the line number where SetupVirtualMap is defined
 			LINE_NUM=$(grep -n "<key>SetupVirtualMap</key>" "$CONFIG_FILE" | cut -d ":" -f1)
-
+			echo "Line number: $LINE_NUM"
 			if [ -z "$LINE_NUM" ]; then
 				echo "Error: Could not find SetupVirtualMap in config file"
 				exit 1
@@ -2082,12 +2085,15 @@ do
 
 			# Get the value line (next line after the key)
 			VALUE_LINE_NUM=$((LINE_NUM + 1))
+			echo "Value line number: $VALUE_LINE_NUM"
 			VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
+			echo "Value line: $VALUE_LINE"
 
 			# Toggle the value
 			if [[ "$VALUE_LINE" == *"<true/>"* ]]; then
 				# Change from true to false
 				sed -i '' "${VALUE_LINE_NUM}s/<true\/>/<false\/>/" "$CONFIG_FILE"
+
 				echo "SetupVirtualMap changed from <true/> to <false/>"
 			elif [[ "$VALUE_LINE" == *"<false/>"* ]]; then
 				# Change from false to true
