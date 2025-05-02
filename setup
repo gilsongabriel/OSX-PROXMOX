@@ -2057,7 +2057,6 @@ do
 		echo " " # SetupVirtualMap
 		# Find the line number where SetupVirtualMap is defined
 		LINE_NUM=$(grep -n "<key>SetupVirtualMap</key>" "$CONFIG_FILE" | cut -d ":" -f1)
-		echo "Line number: $LINE_NUM"
 		if [ -z "$LINE_NUM" ]; then
 			echo "Error: Could not find SetupVirtualMap in config file"
 			exit 1
@@ -2066,8 +2065,9 @@ do
 		# Get the value line (next line after the key)
 		VALUE_LINE_NUM=$((LINE_NUM + 1))
 		VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
+		CLEAR_VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE" | sed 's/^[[:space:]]*//')
 
-		echo -n "Toggle SetupVirtualMap value? [Y/N] (Current value: $VALUE_LINE) [or ENTER for Default: N]: "
+		echo -n "Toggle SetupVirtualMap value? [Y/N] (Current value: $CLEAR_VALUE_LINE) [or ENTER for Default: N]: "
 		read TOGGLE_VIRTUAL_MAP
 		if [ -z ${TOGGLE_VIRTUAL_MAP} ]; then TOGGLE_VIRTUAL_MAP="N"; fi;
 
