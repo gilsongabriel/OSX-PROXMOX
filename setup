@@ -2107,6 +2107,53 @@ do
 			diff -u --color /mnt/opencore/EFI/OC/config.plist.backup /mnt/opencore/EFI/OC/config.plist
 		fi
 
+		echo " " # SecureBootModel
+		# Find the line number where SecureBootModel is defined
+		LINE_NUM=$(grep -n "<key>SecureBootModel</key>" "$CONFIG_FILE" | cut -d ":" -f1)
+		if [ -z "$LINE_NUM" ]; then
+			echo "Error: Could not find SecureBootModel in config file"
+			exit 1
+		fi
+
+		# Get the value line (next line after the key)
+		VALUE_LINE_NUM=$((LINE_NUM + 1))
+		VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
+		CLEAR_VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE" | sed 's/^[[:space:]]*//')
+
+		echo -n "Toggle SecureBootModel value? (Current value: $CLEAR_VALUE_LINE) | [Y/N] [or ENTER for Default: N]: "
+		read TOGGLE_SECURE_BOOT_MODEL
+		if [ -z ${TOGGLE_SECURE_BOOT_MODEL} ]; then TOGGLE_SECURE_BOOT_MODEL="N"; fi;
+
+		if [ "${TOGGLE_SECURE_BOOT_MODEL}" == "Y" ] || [ "${TOGGLE_SECURE_BOOT_MODEL}" == "y" ]
+		then
+			# Check if config file exists
+			if [ ! -f "$CONFIG_FILE" ]; then
+				echo "Error: Config file not found at $CONFIG_FILE"
+				exit 1
+			fi
+
+			# Create backup
+			cp "$CONFIG_FILE" "$BACKUP_FILE"
+			echo "Created backup at $BACKUP_FILE"
+
+			# Toggle the value
+			if [[ "$VALUE_LINE" == *"<true/>"* ]]; then
+				# Change from true to false
+				sed -i "${VALUE_LINE_NUM}s/<true\/>/<false\/>/" "$CONFIG_FILE"
+				echo "SecureBootModel changed from <true/> to <false/>"
+			elif [[ "$VALUE_LINE" == *"<false/>"* ]]; then
+				# Change from false to true
+				sed -i "${VALUE_LINE_NUM}s/<false\/>/<true\/>/" "$CONFIG_FILE"
+				echo "SecureBootModel changed from <false/> to <true/>"
+			else
+				echo "Error: Could not determine current value of SecureBootModel"
+				echo "Current value line: $VALUE_LINE"
+				exit 1
+			fi
+
+			diff -u --color /mnt/opencore/EFI/OC/config.plist.backup /mnt/opencore/EFI/OC/config.plist
+		fi
+
 
 		echo " " # AppleCpuPmCfgLock
 		# Find the line number where AppleCpuPmCfgLock is defined
