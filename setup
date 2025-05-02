@@ -2137,14 +2137,14 @@ do
 			echo "Created backup at $BACKUP_FILE"
 
 			# Toggle the value
-			if [[ "$VALUE_LINE" == *"<true/>"* ]]; then
-				# Change from true to false
-				sed -i "${VALUE_LINE_NUM}s/<true\/>/<false\/>/" "$CONFIG_FILE"
-				echo "SecureBootModel changed from <true/> to <false/>"
-			elif [[ "$VALUE_LINE" == *"<false/>"* ]]; then
-				# Change from false to true
-				sed -i "${VALUE_LINE_NUM}s/<false\/>/<true\/>/" "$CONFIG_FILE"
-				echo "SecureBootModel changed from <false/> to <true/>"
+			if [[ "$VALUE_LINE" == *"<string>Enabled</string>"* ]]; then
+				# Change from Enabled to false
+				sed -i "${VALUE_LINE_NUM}s/<string>Enabled<\/string>/<string>Disabled<\/string>/" "$CONFIG_FILE"
+				echo "SecureBootModel changed from Enabled to Disabled"
+			elif [[ "$VALUE_LINE" == *"<string>Disabled</string>"* ]]; then
+				# Change from false to Enabled
+				sed -i "${VALUE_LINE_NUM}s/<string>Disabled<\/string>/<string>Enabled<\/string>/" "$CONFIG_FILE"
+				echo "SecureBootModel changed from Disabled to Enabled"
 			else
 				echo "Error: Could not determine current value of SecureBootModel"
 				echo "Current value line: $VALUE_LINE"
