@@ -2023,6 +2023,8 @@ do
 			cd ${SCRIPT_DIR}
 			rm -f ${TMPDIR}/rm-csr-lock.patch
 			echo "Now you can use \`csrutil disable\` and \`csrutil authenticated-root disable\` in Recovery OS to disable SIP!"
+
+			diff -u --color /mnt/opencore/EFI/OC/config.plist.backup /mnt/opencore/EFI/OC/config.plist
 		fi
 
 		echo " "
@@ -2048,11 +2050,15 @@ do
 			patch -p1 < /root/OSX-PROXMOX/tmp/timeout.patch >> ${LOGFILE} 2>> ${LOGFILE}
 			cd ${SCRIPT_DIR}
 			rm -f ${TMPDIR}/timeout.patch
+
+			diff -u --color /mnt/opencore/EFI/OC/config.plist.backup /mnt/opencore/EFI/OC/config.plist
 		fi
+
 
 		CONFIG_FILE_DIR="/mnt/opencore/EFI/OC"
 		CONFIG_FILE="${CONFIG_FILE_DIR}/config.plist"
 		BACKUP_FILE="${CONFIG_FILE}.backup"
+
 
 		echo " " # SetupVirtualMap
 		# Find the line number where SetupVirtualMap is defined
@@ -2067,7 +2073,7 @@ do
 		VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
 		CLEAR_VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE" | sed 's/^[[:space:]]*//')
 
-		echo -n "Toggle SetupVirtualMap value? [Y/N] (Current value: $CLEAR_VALUE_LINE) [or ENTER for Default: N]: "
+		echo -n "Toggle SetupVirtualMap value? (Current value: $CLEAR_VALUE_LINE) | [Y/N] [or ENTER for Default: N]: "
 		read TOGGLE_VIRTUAL_MAP
 		if [ -z ${TOGGLE_VIRTUAL_MAP} ]; then TOGGLE_VIRTUAL_MAP="N"; fi;
 
@@ -2097,12 +2103,25 @@ do
 				echo "Current value line: $VALUE_LINE"
 				exit 1
 			fi
+
+			diff -u --color /mnt/opencore/EFI/OC/config.plist.backup /mnt/opencore/EFI/OC/config.plist
 		fi
 
-		diff -u --color /mnt/opencore/EFI/OC/config.plist.backup /mnt/opencore/EFI/OC/config.plist
 
-		echo " "
-		echo -n "Toggle AppleCpuPmCfgLock value? [Y/N] [or ENTER for Default: N]: "
+		echo " " # AppleCpuPmCfgLock
+		# Find the line number where AppleCpuPmCfgLock is defined
+		LINE_NUM=$(grep -n "<key>AppleCpuPmCfgLock</key>" "$CONFIG_FILE" | cut -d ":" -f1)
+		if [ -z "$LINE_NUM" ]; then
+			echo "Error: Could not find AppleCpuPmCfgLock in config file"
+			exit 1
+		fi
+
+		# Get the value line (next line after the key)
+		VALUE_LINE_NUM=$((LINE_NUM + 1))
+		VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
+		CLEAR_VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE" | sed 's/^[[:space:]]*//')
+
+		echo -n "Toggle AppleCpuPmCfgLock value? (Current value: $CLEAR_VALUE_LINE) | [Y/N] [or ENTER for Default: N]: "
 		read TOGGLE_CPUPM_CFGLOCK
 		if [ -z ${TOGGLE_CPUPM_CFGLOCK} ]; then TOGGLE_CPUPM_CFGLOCK="N"; fi;
 
@@ -2118,17 +2137,6 @@ do
 			cp "$CONFIG_FILE" "$BACKUP_FILE"
 			echo "Created backup at $BACKUP_FILE"
 
-			# Find the line number where AppleCpuPmCfgLock is defined
-			LINE_NUM=$(grep -n "<key>AppleCpuPmCfgLock</key>" "$CONFIG_FILE" | cut -d ":" -f1)
-			if [ -z "$LINE_NUM" ]; then
-				echo "Error: Could not find AppleCpuPmCfgLock in config file"
-				exit 1
-			fi
-
-			# Get the value line (next line after the key)
-			VALUE_LINE_NUM=$((LINE_NUM + 1))
-			VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
-
 			# Toggle the value
 			if [[ "$VALUE_LINE" == *"<true/>"* ]]; then
 				# Change from true to false
@@ -2143,12 +2151,25 @@ do
 				echo "Current value line: $VALUE_LINE"
 				exit 1
 			fi
+
+			diff -u --color /mnt/opencore/EFI/OC/config.plist.backup /mnt/opencore/EFI/OC/config.plist
 		fi
 
-		diff -u --color /mnt/opencore/EFI/OC/config.plist.backup /mnt/opencore/EFI/OC/config.plist
 
-		echo " "
-		echo -n "Toggle AppleXcpmCfgLock value? [Y/N] [or ENTER for Default: N]: "
+		echo " " # AppleXcpmCfgLock
+		# Find the line number where AppleXcpmCfgLock is defined
+		LINE_NUM=$(grep -n "<key>AppleXcpmCfgLock</key>" "$CONFIG_FILE" | cut -d ":" -f1)
+		if [ -z "$LINE_NUM" ]; then
+			echo "Error: Could not find AppleXcpmCfgLock in config file"
+			exit 1
+		fi
+
+		# Get the value line (next line after the key)
+		VALUE_LINE_NUM=$((LINE_NUM + 1))
+		VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
+		CLEAR_VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE" | sed 's/^[[:space:]]*//')
+
+		echo -n "Toggle AppleXcpmCfgLock value? (Current value: $CLEAR_VALUE_LINE) | [Y/N] [or ENTER for Default: N]: "
 		read TOGGLE_XCPM_CFGLOCK
 		if [ -z ${TOGGLE_XCPM_CFGLOCK} ]; then TOGGLE_XCPM_CFGLOCK="N"; fi;
 
@@ -2164,17 +2185,6 @@ do
 			cp "$CONFIG_FILE" "$BACKUP_FILE"
 			echo "Created backup at $BACKUP_FILE"
 
-			# Find the line number where AppleXcpmCfgLock is defined
-			LINE_NUM=$(grep -n "<key>AppleXcpmCfgLock</key>" "$CONFIG_FILE" | cut -d ":" -f1)
-			if [ -z "$LINE_NUM" ]; then
-				echo "Error: Could not find AppleXcpmCfgLock in config file"
-				exit 1
-			fi
-
-			# Get the value line (next line after the key)
-			VALUE_LINE_NUM=$((LINE_NUM + 1))
-			VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
-
 			# Toggle the value
 			if [[ "$VALUE_LINE" == *"<true/>"* ]]; then
 				# Change from true to false
@@ -2189,12 +2199,25 @@ do
 				echo "Current value line: $VALUE_LINE"
 				exit 1
 			fi
+
+			diff -u --color /mnt/opencore/EFI/OC/config.plist.backup /mnt/opencore/EFI/OC/config.plist
 		fi
 
-		diff -u --color /mnt/opencore/EFI/OC/config.plist.backup /mnt/opencore/EFI/OC/config.plist
 
-		echo " "
-		echo -n "Toggle AppleXcpmExtraMsrs value? [Y/N] [or ENTER for Default: N]: "
+		echo " " # AppleXcpmExtraMsrs
+		# Find the line number where AppleXcpmExtraMsrs is defined
+		LINE_NUM=$(grep -n "<key>AppleXcpmExtraMsrs</key>" "$CONFIG_FILE" | cut -d ":" -f1)
+		if [ -z "$LINE_NUM" ]; then
+			echo "Error: Could not find AppleXcpmExtraMsrs in config file"
+			exit 1
+		fi
+
+		# Get the value line (next line after the key)
+		VALUE_LINE_NUM=$((LINE_NUM + 1))
+		VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
+		CLEAR_VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE" | sed 's/^[[:space:]]*//')
+
+		echo -n "Toggle AppleXcpmExtraMsrs value? (Current value: $CLEAR_VALUE_LINE) | [Y/N] [or ENTER for Default: N]: "
 		read TOGGLE_XCPM_MSRS
 		if [ -z ${TOGGLE_XCPM_MSRS} ]; then TOGGLE_XCPM_MSRS="N"; fi;
 
@@ -2210,17 +2233,6 @@ do
 			cp "$CONFIG_FILE" "$BACKUP_FILE"
 			echo "Created backup at $BACKUP_FILE"
 
-			# Find the line number where AppleXcpmExtraMsrs is defined
-			LINE_NUM=$(grep -n "<key>AppleXcpmExtraMsrs</key>" "$CONFIG_FILE" | cut -d ":" -f1)
-			if [ -z "$LINE_NUM" ]; then
-				echo "Error: Could not find AppleXcpmExtraMsrs in config file"
-				exit 1
-			fi
-
-			# Get the value line (next line after the key)
-			VALUE_LINE_NUM=$((LINE_NUM + 1))
-			VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
-
 			# Toggle the value
 			if [[ "$VALUE_LINE" == *"<true/>"* ]]; then
 				# Change from true to false
@@ -2235,12 +2247,25 @@ do
 				echo "Current value line: $VALUE_LINE"
 				exit 1
 			fi
+
+			diff -u --color /mnt/opencore/EFI/OC/config.plist.backup /mnt/opencore/EFI/OC/config.plist
 		fi
 
-		diff -u --color /mnt/opencore/EFI/OC/config.plist.backup /mnt/opencore/EFI/OC/config.plist
 
-		echo " "
-		echo -n "Toggle AppleXcpmForceBoost value? [Y/N] [or ENTER for Default: N]: "
+		echo " " # AppleXcpmForceBoost
+		# Find the line number where AppleXcpmForceBoost is defined
+		LINE_NUM=$(grep -n "<key>AppleXcpmForceBoost</key>" "$CONFIG_FILE" | cut -d ":" -f1)
+		if [ -z "$LINE_NUM" ]; then
+			echo "Error: Could not find AppleXcpmForceBoost in config file"
+			exit 1
+		fi
+
+		# Get the value line (next line after the key)
+		VALUE_LINE_NUM=$((LINE_NUM + 1))
+		VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
+		CLEAR_VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE" | sed 's/^[[:space:]]*//')
+
+		echo -n "Toggle AppleXcpmForceBoost value? (Current value: $CLEAR_VALUE_LINE) | [Y/N] [or ENTER for Default: N]: "
 		read TOGGLE_XCPM_BOOST
 		if [ -z ${TOGGLE_XCPM_BOOST} ]; then TOGGLE_XCPM_BOOST="N"; fi;
 
@@ -2256,17 +2281,6 @@ do
 			cp "$CONFIG_FILE" "$BACKUP_FILE"
 			echo "Created backup at $BACKUP_FILE"
 
-			# Find the line number where AppleXcpmForceBoost is defined
-			LINE_NUM=$(grep -n "<key>AppleXcpmForceBoost</key>" "$CONFIG_FILE" | cut -d ":" -f1)
-			if [ -z "$LINE_NUM" ]; then
-				echo "Error: Could not find AppleXcpmForceBoost in config file"
-				exit 1
-			fi
-
-			# Get the value line (next line after the key)
-			VALUE_LINE_NUM=$((LINE_NUM + 1))
-			VALUE_LINE=$(sed -n "${VALUE_LINE_NUM}p" "$CONFIG_FILE")
-
 			# Toggle the value
 			if [[ "$VALUE_LINE" == *"<true/>"* ]]; then
 				# Change from true to false
@@ -2281,9 +2295,10 @@ do
 				echo "Current value line: $VALUE_LINE"
 				exit 1
 			fi
+
+			diff -u --color /mnt/opencore/EFI/OC/config.plist.backup /mnt/opencore/EFI/OC/config.plist
 		fi
 
-		diff -u --color /mnt/opencore/EFI/OC/config.plist.backup /mnt/opencore/EFI/OC/config.plist
 
 		umount /mnt/opencore >> ${LOGFILE} 2>> ${LOGFILE}
 		rmdir /mnt/opencore
